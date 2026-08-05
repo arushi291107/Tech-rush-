@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CventSphere - Event Management & Volunteer Portal</title>
-    <meta name="description" content="Centralized event registration, volunteer coordination, and QR gate management portal.">
+    <meta name="description"
+        content="Centralized event registration, volunteer coordination, and QR gate management portal.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body class="dark-theme">
 
     <!-- Top Navigation Bar -->
@@ -37,7 +42,8 @@
                             <span class="clear-notif" onclick="clearNotifs()">Clear all</span>
                         </div>
                         <div class="notif-list" id="notif-list-container">
-                            <div style="padding: 16px; text-align: center; color: var(--text-dim); font-size: 0.85rem;">No new notifications</div>
+                            <div style="padding: 16px; text-align: center; color: var(--text-dim); font-size: 0.85rem;">
+                                No new notifications</div>
                         </div>
                     </div>
                 </div>
@@ -65,14 +71,16 @@
                     <div class="attendee-hero-text">
                         <div class="badge-tag"><i class="fa-solid fa-ticket text-emerald"></i> Event Entry Hub</div>
                         <h1>Discover & Attend Campus Events</h1>
-                        <p>Browse upcoming technical fests, workshops, and summits. Sign in to reserve your seat and access your personal digital QR gate pass.</p>
+                        <p>Browse upcoming technical fests, workshops, and summits. Sign in to reserve your seat and
+                            access your personal digital QR gate pass.</p>
                     </div>
 
                     <!-- ATTENDEE SIGN IN BOX -->
                     <div class="attendee-auth-box">
                         <div class="auth-box-header">
                             <h3><i class="fa-solid fa-right-to-bracket text-emerald"></i> Attendee Sign In</h3>
-                            <p style="font-size: 0.85rem; color: var(--text-muted);">Sign in to access your tickets and digital passes</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Sign in to access your tickets and
+                                digital passes</p>
                         </div>
                         <form id="attendee-login-form" onsubmit="handleAttendeeLogin(event)">
                             <div class="form-group">
@@ -81,7 +89,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="email" id="att-email-input" required placeholder="Enter your email address">
+                                <input type="email" id="att-email-input" required
+                                    placeholder="Enter your email address">
                             </div>
                             <div class="form-group">
                                 <label>Password / Access Code</label>
@@ -95,7 +104,8 @@
                         <!-- SWITCHER BUTTON PLACED DIRECTLY BELOW ATTENDEE LOGIN BOX -->
                         <div class="switch-banner-below">
                             <button class="btn btn-staff-switch" onclick="showStaffPortal('volunteer')">
-                                Not an Attendee? Click here for Volunteers & Organizers <i class="fa-solid fa-arrow-right"></i>
+                                Not an Attendee? Click here for Volunteers & Organizers <i
+                                    class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
                     </div>
@@ -110,7 +120,8 @@
                             <i class="fa-solid fa-compass"></i> Discover Events
                         </button>
                         <button class="tab-btn" id="btn-tab-my-tickets" onclick="switchAttendeeSubTab('my-tickets')">
-                            <i class="fa-solid fa-qrcode"></i> My Registrations & QR Passes (<span id="my-tickets-count">0</span>)
+                            <i class="fa-solid fa-qrcode"></i> My Registrations & QR Passes (<span
+                                id="my-tickets-count">0</span>)
                         </button>
                     </div>
 
@@ -119,14 +130,19 @@
                         <div class="search-filter-bar">
                             <div class="search-input-wrapper">
                                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                                <input type="text" id="event-search-input" placeholder="Search events by title or location..." onkeyup="filterEvents()">
+                                <input type="text" id="event-search-input"
+                                    placeholder="Search events by title or location..." onkeyup="filterEvents()">
                             </div>
                             <div class="category-filters">
-                                <button class="cat-btn active" onclick="filterEventsByCategory('all', this)">All Events</button>
-                                <button class="cat-btn" onclick="filterEventsByCategory('Tech', this)">Technical</button>
+                                <button class="cat-btn active" onclick="filterEventsByCategory('all', this)">All
+                                    Events</button>
+                                <button class="cat-btn"
+                                    onclick="filterEventsByCategory('Tech', this)">Technical</button>
                                 <button class="cat-btn" onclick="filterEventsByCategory('Design', this)">Design</button>
-                                <button class="cat-btn" onclick="filterEventsByCategory('Business', this)">Business</button>
-                                <button class="cat-btn" onclick="filterEventsByCategory('Gaming', this)">Esports</button>
+                                <button class="cat-btn"
+                                    onclick="filterEventsByCategory('Business', this)">Business</button>
+                                <button class="cat-btn"
+                                    onclick="filterEventsByCategory('Gaming', this)">Esports</button>
                             </div>
                         </div>
 
@@ -183,12 +199,14 @@
 
                 <!-- ================= STAFF TAB 1: VOLUNTEER PORTAL ================= -->
                 <div id="staff-volunteer-content" class="staff-tab-content active">
-                    
+
                     <!-- VOLUNTEER AUTH CONTAINER (BEFORE LOGIN) -->
                     <div id="volunteer-auth-card" class="auth-card-wrapper">
                         <div class="auth-card-nav">
-                            <button class="auth-sub-tab active" id="vol-tab-login-btn" onclick="switchVolAuthSubTab('login')">Volunteer Login</button>
-                            <button class="auth-sub-tab" id="vol-tab-signup-btn" onclick="switchVolAuthSubTab('signup')">Volunteer Sign Up</button>
+                            <button class="auth-sub-tab active" id="vol-tab-login-btn"
+                                onclick="switchVolAuthSubTab('login')">Volunteer Login</button>
+                            <button class="auth-sub-tab" id="vol-tab-signup-btn"
+                                onclick="switchVolAuthSubTab('signup')">Volunteer Sign Up</button>
                         </div>
 
                         <!-- VOLUNTEER LOGIN FORM -->
@@ -247,7 +265,8 @@
                                     <div class="passport-title">Verified Crew Account</div>
                                     <h3 id="vol-profile-name">Volunteer User</h3>
                                     <div class="user-tags">
-                                        <span class="badge-role" id="vol-profile-role"><i class="fa-solid fa-shield-halved"></i> Crew Member</span>
+                                        <span class="badge-role" id="vol-profile-role"><i
+                                                class="fa-solid fa-shield-halved"></i> Crew Member</span>
                                         <span id="vol-profile-email">volunteer@portal.com</span>
                                     </div>
                                 </div>
@@ -271,7 +290,8 @@
                         <!-- Interactive Task Checklist -->
                         <div class="section-subtitle-row" style="margin-top: 40px;">
                             <h2><i class="fa-solid fa-list-check text-purple"></i> Event Duty Task Checklist</h2>
-                            <span style="font-size: 0.85rem; color: var(--text-muted);" id="task-progress-label">0 tasks completed</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);" id="task-progress-label">0 tasks
+                                completed</span>
                         </div>
 
                         <div class="task-checklist-card">
@@ -285,12 +305,14 @@
 
                 <!-- ================= STAFF TAB 2: ORGANISER PORTAL ================= -->
                 <div id="staff-organizer-content" class="staff-tab-content">
-                    
+
                     <!-- ORGANISER AUTH CONTAINER (BEFORE LOGIN) -->
                     <div id="organizer-auth-card" class="auth-card-wrapper">
                         <div class="auth-card-nav">
-                            <button class="auth-sub-tab active" id="org-tab-login-btn" onclick="switchOrgAuthSubTab('login')">Organiser Login</button>
-                            <button class="auth-sub-tab" id="org-tab-signup-btn" onclick="switchOrgAuthSubTab('signup')">Organiser Sign Up</button>
+                            <button class="auth-sub-tab active" id="org-tab-login-btn"
+                                onclick="switchOrgAuthSubTab('login')">Organiser Login</button>
+                            <button class="auth-sub-tab" id="org-tab-signup-btn"
+                                onclick="switchOrgAuthSubTab('signup')">Organiser Sign Up</button>
                         </div>
 
                         <!-- ORGANISER LOGIN FORM -->
@@ -312,11 +334,13 @@
                         <form id="org-signup-form" style="display: none;" onsubmit="handleOrgSignup(event)">
                             <div class="form-group">
                                 <label>Organization / Host Name</label>
-                                <input type="text" id="org-signup-orgname" required placeholder="Enter organization name">
+                                <input type="text" id="org-signup-orgname" required
+                                    placeholder="Enter organization name">
                             </div>
                             <div class="form-group">
                                 <label>Contact Person Name</label>
-                                <input type="text" id="org-signup-contact" required placeholder="Enter contact person name">
+                                <input type="text" id="org-signup-contact" required
+                                    placeholder="Enter contact person name">
                             </div>
                             <div class="form-group">
                                 <label>Organiser Email Address</label>
@@ -341,7 +365,8 @@
                                     <div class="dash-icon icon-purple"><i class="fa-solid fa-users"></i></div>
                                 </div>
                                 <div class="dash-stat-val" id="org-total-reg-val">0</div>
-                                <div class="dash-stat-trend positive"><i class="fa-solid fa-chart-line"></i> Total attendee count</div>
+                                <div class="dash-stat-trend positive"><i class="fa-solid fa-chart-line"></i> Total
+                                    attendee count</div>
                             </div>
 
                             <div class="dash-stat-card">
@@ -350,7 +375,8 @@
                                     <div class="dash-icon icon-emerald"><i class="fa-solid fa-qrcode"></i></div>
                                 </div>
                                 <div class="dash-stat-val" id="org-checked-in-val">0</div>
-                                <div class="dash-stat-trend positive"><i class="fa-solid fa-check-double"></i> Gate verified</div>
+                                <div class="dash-stat-trend positive"><i class="fa-solid fa-check-double"></i> Gate
+                                    verified</div>
                             </div>
 
                             <div class="dash-stat-card">
@@ -368,12 +394,14 @@
                                     <div class="dash-icon icon-orange"><i class="fa-solid fa-chart-line"></i></div>
                                 </div>
                                 <div class="dash-stat-val" id="org-attendance-rate-val">0%</div>
-                                <div class="dash-stat-trend positive"><i class="fa-solid fa-bolt"></i> Live percentage</div>
+                                <div class="dash-stat-trend positive"><i class="fa-solid fa-bolt"></i> Live percentage
+                                </div>
                             </div>
                         </div>
 
                         <!-- Organizer Controls Row -->
-                        <div style="margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                        <div
+                            style="margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
                             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                                 <button class="btn btn-gradient" onclick="openModal('createEventModal')">
                                     <i class="fa-solid fa-plus"></i> Create New Event
@@ -392,7 +420,8 @@
 
                         <!-- Managed Events Table -->
                         <div class="table-container" style="margin-bottom: 32px;">
-                            <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i class="fa-solid fa-calendar-days text-purple"></i> Managed Events Directory</h3>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i
+                                    class="fa-solid fa-calendar-days text-purple"></i> Managed Events Directory</h3>
                             <table class="data-table">
                                 <thead>
                                     <tr>
@@ -413,7 +442,9 @@
 
                         <!-- QR Gate Control Roster -->
                         <div class="table-container">
-                            <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i class="fa-solid fa-qrcode text-emerald"></i> Gate Control Check-in & Exit Telemetry</h3>
+                            <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i
+                                    class="fa-solid fa-qrcode text-emerald"></i> Gate Control Check-in & Exit Telemetry
+                            </h3>
                             <table class="data-table">
                                 <thead>
                                     <tr>
@@ -480,7 +511,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('collegeRegistrationModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('collegeRegistrationModal')">Cancel</button>
                     <button type="submit" class="btn btn-emerald">
                         <i class="fa-solid fa-qrcode"></i> Complete Registration & Get Pass
                     </button>
@@ -537,7 +569,8 @@
                     <textarea id="ev-desc" rows="3" required placeholder="Keynotes, agenda, details..."></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('createEventModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('createEventModal')">Cancel</button>
                     <button type="submit" class="btn btn-gradient" id="ev-modal-submit-btn">Publish Event</button>
                 </div>
             </form>
@@ -576,7 +609,8 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addVolunteerModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('addVolunteerModal')">Cancel</button>
                     <button type="submit" class="btn btn-cyan">Assign Crew Role</button>
                 </div>
             </form>
@@ -605,7 +639,8 @@
             <div id="certificate-body" style="padding: 30px; text-align: center; color: #FFF;"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal('certificateModal')">Close</button>
-                <button class="btn btn-cyan" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Certificate</button>
+                <button class="btn btn-cyan" onclick="window.print()"><i class="fa-solid fa-print"></i> Print
+                    Certificate</button>
             </div>
         </div>
     </div>
@@ -629,4 +664,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
