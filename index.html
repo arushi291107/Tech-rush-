@@ -1,538 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CventSphere - Centralized Event & Volunteer Management Portal</title>
-    <meta name="description"
-        content="All-in-one enterprise event management platform featuring Organizer, Volunteer, Attendee, and Admin Portals.">
+    <title>CventSphere - Event Management & Volunteer Portal</title>
+    <meta name="description" content="Centralized event registration, volunteer coordination, and QR gate management portal.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body class="dark-theme">
 
     <!-- Top Navigation Bar -->
     <header class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="brand-logo" onclick="switchView('overview')">
-                <div class="logo-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <a href="#" class="brand-logo" onclick="showAttendeePortal()">
+                <div class="logo-icon"><i class="fa-solid fa-calendar-days"></i></div>
                 <span class="logo-text">Cvent<span class="gradient-text">Sphere</span></span>
             </a>
 
-            <nav class="nav-links">
-                <button class="nav-btn active" data-view="overview" onclick="switchView('overview')">
-                    <i class="fa-solid fa-grid-2"></i> Overview
-                </button>
-                <button class="nav-btn" data-view="organizer" onclick="switchView('organizer')">
-                    <i class="fa-solid fa-sliders"></i> Organizer
-                </button>
-                <button class="nav-btn" data-view="volunteer" onclick="switchView('volunteer')">
-                    <i class="fa-solid fa-handshake-angle"></i> Volunteer
-                </button>
-                <button class="nav-btn" data-view="attendee" onclick="switchView('attendee')">
-                    <i class="fa-solid fa-ticket"></i> Attendee
-                </button>
-                <button class="nav-btn" data-view="admin" onclick="switchView('admin')">
-                    <i class="fa-solid fa-user-shield"></i> Admin Panel
-                </button>
-            </nav>
-
+            <!-- CLEAN NAVBAR WITHOUT TOP VOLUNTEER/ORGANIZER BUTTONS -->
             <div class="nav-actions">
                 <!-- Notifications Center -->
                 <div class="notif-wrapper">
-                    <button class="icon-nav-btn" onclick="toggleNotifDropdown()">
+                    <button class="icon-nav-btn" onclick="toggleNotifDropdown()" title="Notifications">
                         <i class="fa-solid fa-bell"></i>
-                        <span class="notif-badge" id="notif-count-badge">3</span>
+                        <span class="notif-badge" id="notif-count-badge">0</span>
                     </button>
                     <div class="notif-dropdown" id="notif-dropdown">
                         <div class="notif-header">
-                            <h4><i class="fa-solid fa-bell text-purple"></i> Notifications Center</h4>
-                            <span class="clear-notif" onclick="clearNotifs()">Mark all read</span>
+                            <h4><i class="fa-solid fa-bell text-purple"></i> Notifications</h4>
+                            <span class="clear-notif" onclick="clearNotifs()">Clear all</span>
                         </div>
                         <div class="notif-list" id="notif-list-container">
-                            <!-- Dynamic Notifications -->
+                            <div style="padding: 16px; text-align: center; color: var(--text-dim); font-size: 0.85rem;">No new notifications</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- User Auth Profile -->
+                <!-- User Session Indicator -->
                 <div class="user-auth-wrapper">
-                    <button class="btn btn-glass btn-sm" id="auth-btn" onclick="openModal('authModal')">
-                        <i class="fa-solid fa-user"></i> <span id="auth-btn-label">Login / Register</span>
-                    </button>
+                    <div class="user-session-chip" id="user-chip" onclick="showAttendeePortal()">
+                        <i class="fa-solid fa-circle-user text-emerald"></i>
+                        <span id="user-chip-name">Attendee Portal</span>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Area -->
+    <!-- Main Content Container -->
     <main class="main-content">
 
-        <!-- ================= OVERVIEW / LANDING BLOCK ================= -->
-        <section id="overview-view" class="view-section active">
-            <!-- Hero Banner -->
-            <div class="hero-section">
+        <!-- ================= VIEW 1: ATTENDEE PORTAL (DEFAULT OPEN VIEW) ================= -->
+        <section id="attendee-portal-view" class="view-section active">
+            <!-- Attendee Landing & Auth Hero -->
+            <div class="attendee-hero-card">
                 <div class="hero-glow background-glow-1"></div>
-                <div class="hero-glow background-glow-2"></div>
-                <div class="container hero-grid">
-                    <div class="hero-text-content">
-                        <div class="hero-badge">
-                            <span class="pulse-dot"></span> All-in-One Centralized Event & Volunteer Portal
-                        </div>
-                        <h1 class="hero-title">
-                            Next-Gen Platform for <span class="gradient-text-animated">Campus & Enterprise Events</span>
-                        </h1>
-                        <p class="hero-subtitle">
-                            Seamlessly integrate <strong>User Auth</strong>, <strong>Organizer Telemetry</strong>,
-                            <strong>Volunteer Task Allocation</strong>, <strong>College Registration</strong>,
-                            <strong>QR Gate Scanning</strong>, and <strong>Analytics</strong>.
-                        </p>
-                        <div class="hero-cta-group">
-                            <button class="btn btn-gradient btn-lg" onclick="switchView('organizer')">
-                                Launch Organizer Dashboard <i class="fa-solid fa-arrow-right"></i>
-                            </button>
-                            <button class="btn btn-glass btn-lg" onclick="switchView('attendee')">
-                                Register for Campus Events <i class="fa-solid fa-graduation-cap"></i>
-                            </button>
-                        </div>
-
-                        <div class="hero-stats-row">
-                            <div class="stat-item">
-                                <span class="stat-num" id="stat-events-count">120+</span>
-                                <span class="stat-label">Active Events</span>
-                            </div>
-                            <div class="stat-divider"></div>
-                            <div class="stat-item">
-                                <span class="stat-num" id="stat-volunteers-count">4.8k</span>
-                                <span class="stat-label">Assigned Crew</span>
-                            </div>
-                            <div class="stat-divider"></div>
-                            <div class="stat-item">
-                                <span class="stat-num" id="stat-attendees-count">85k+</span>
-                                <span class="stat-label">QR Passes Issued</span>
-                            </div>
-                        </div>
+                <div class="container hero-split">
+                    <div class="attendee-hero-text">
+                        <div class="badge-tag"><i class="fa-solid fa-ticket text-emerald"></i> Event Entry Hub</div>
+                        <h1>Discover & Attend Campus Events</h1>
+                        <p>Browse upcoming technical fests, workshops, and summits. Sign in to reserve your seat and access your personal digital QR gate pass.</p>
                     </div>
 
-                    <!-- Interactive Preview Card Deck -->
-                    <div class="hero-visual">
-                        <div class="preview-card-stack">
-                            <div class="stack-card card-organizer-preview" onclick="switchView('organizer')">
-                                <div class="card-tag tag-purple"><i class="fa-solid fa-chart-line"></i> Organizer
-                                    Command</div>
-                                <h4>Annual Tech Fest 2026</h4>
-                                <div class="mini-progress-bar">
-                                    <div class="fill" style="width: 88%;"></div>
-                                </div>
-                                <div class="card-meta">
-                                    <span><i class="fa-solid fa-users"></i> 440 / 500 Reg Limit</span>
-                                    <span class="badge-success">88% Attendance</span>
-                                </div>
+                    <!-- ATTENDEE SIGN IN BOX -->
+                    <div class="attendee-auth-box">
+                        <div class="auth-box-header">
+                            <h3><i class="fa-solid fa-right-to-bracket text-emerald"></i> Attendee Sign In</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Sign in to access your tickets and digital passes</p>
+                        </div>
+                        <form id="attendee-login-form" onsubmit="handleAttendeeLogin(event)">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="att-name-input" required placeholder="Enter your full name">
                             </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="att-email-input" required placeholder="Enter your email address">
+                            </div>
+                            <div class="form-group">
+                                <label>Password / Access Code</label>
+                                <input type="password" id="att-pass-input" required placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="btn btn-emerald" style="width: 100%;">
+                                Sign In as Attendee <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </form>
 
-                            <div class="stack-card card-volunteer-preview" onclick="switchView('volunteer')">
-                                <div class="card-tag tag-cyan"><i class="fa-solid fa-list-check"></i> Volunteer Roster
-                                </div>
-                                <h4>Stage Management Crew</h4>
-                                <div class="shift-info">
-                                    <span><i class="fa-regular fa-check-square"></i> 4 of 5 Tasks Done</span>
-                                    <span class="badge-accent">Accepted</span>
-                                </div>
-                            </div>
-
-                            <div class="stack-card card-attendee-preview" onclick="switchView('attendee')">
-                                <div class="card-tag tag-emerald"><i class="fa-solid fa-qrcode"></i> Entry QR &
-                                    Certificate</div>
-                                <h4>Student Pass & E-Certificate</h4>
-                                <div class="qr-mini-box">
-                                    <i class="fa-solid fa-qrcode"></i>
-                                    <span>QR #CVT-ATT-9042</span>
-                                </div>
-                            </div>
+                        <!-- SWITCHER BUTTON PLACED DIRECTLY BELOW ATTENDEE LOGIN BOX -->
+                        <div class="switch-banner-below">
+                            <button class="btn btn-staff-switch" onclick="showStaffPortal('volunteer')">
+                                Not an Attendee? Click here for Volunteers & Organizers <i class="fa-solid fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- THREE & FOUR PRIMARY BLOCKS SECTION -->
+            <!-- Attendee Events Explorer & Tickets Wallet -->
             <div class="container section-padding">
-                <div class="section-header text-center">
-                    <div class="sub-heading">System Modules</div>
-                    <h2 class="section-title">Centralized Portal Architecture</h2>
-                    <p class="section-desc">Role-based dashboards engineered for flawless campus event orchestration.
-                    </p>
-                </div>
-
-                <div class="blocks-grid">
-                    <!-- BLOCK 1: ORGANIZER -->
-                    <div class="block-card block-organizer" onclick="switchView('organizer')">
-                        <div class="block-icon-glow icon-purple">
-                            <i class="fa-solid fa-chart-pie"></i>
-                        </div>
-                        <div class="block-badge">Module 01</div>
-                        <h3>Organizer Dashboard</h3>
-                        <p>Create & edit events, set dates/venues/poster URLs, enforce registration limits, assign
-                            volunteers to teams, track QR gate entry/exit logs, and export Excel/PDF attendance.</p>
-                        <ul class="block-feature-list">
-                            <li><i class="fa-solid fa-check text-purple"></i> Full Event Creation & Edit Suite</li>
-                            <li><i class="fa-solid fa-check text-purple"></i> Team Volunteer Assignment</li>
-                            <li><i class="fa-solid fa-check text-purple"></i> Attendance % & Excel/PDF Export</li>
-                        </ul>
-                        <div class="block-action">
-                            <span>Open Organizer Studio</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 2: VOLUNTEER -->
-                    <div class="block-card block-volunteer" onclick="switchView('volunteer')">
-                        <div class="block-icon-glow icon-cyan">
-                            <i class="fa-solid fa-user-gear"></i>
-                        </div>
-                        <div class="block-badge">Module 02</div>
-                        <h3>Volunteer Dashboard</h3>
-                        <p>View assigned events, Accept or Reject duty calls, complete interactive task checklists
-                            (Registration, Tech, Stage, Hospitality), and view attendance history.</p>
-                        <ul class="block-feature-list">
-                            <li><i class="fa-solid fa-check text-cyan"></i> Accept / Reject Duty Assignments</li>
-                            <li><i class="fa-solid fa-check text-cyan"></i> Task Checklist with Progress Bar</li>
-                            <li><i class="fa-solid fa-check text-cyan"></i> Team Specific Crew Roster</li>
-                        </ul>
-                        <div class="block-action">
-                            <span>Enter Volunteer Hub</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 3: ATTENDEE -->
-                    <div class="block-card block-attendee" onclick="switchView('attendee')">
-                        <div class="block-icon-glow icon-emerald">
-                            <i class="fa-solid fa-ticket-simple"></i>
-                        </div>
-                        <div class="block-badge">Module 03</div>
-                        <h3>Attendee Dashboard</h3>
-                        <p>8-field registration form (Name, College ID, Dept, Year, Branch), instant QR pass issuance,
-                            attendance tracking, star reviews, and downloadable E-Certificates.</p>
-                        <ul class="block-feature-list">
-                            <li><i class="fa-solid fa-check text-emerald"></i> Detailed 8-Field Registration Form</li>
-                            <li><i class="fa-solid fa-check text-emerald"></i> Unique QR Code Pass Wallet</li>
-                            <li><i class="fa-solid fa-check text-emerald"></i> Digital E-Certificate Generator</li>
-                        </ul>
-                        <div class="block-action">
-                            <span>Explore Events & Pass Wallet</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </div>
-
-                    <!-- BLOCK 4: ADMIN -->
-                    <div class="block-card block-admin" onclick="switchView('admin')">
-                        <div class="block-icon-glow icon-orange">
-                            <i class="fa-solid fa-user-shield"></i>
-                        </div>
-                        <div class="block-badge">Module 04</div>
-                        <h3>Admin Panel & Analytics</h3>
-                        <p>Complete control center for platform admins. Manage users, delete inappropriate events, view
-                            system settings, and inspect visual analytics charts.</p>
-                        <ul class="block-feature-list">
-                            <li><i class="fa-solid fa-check text-gold"></i> Manage Users & Roles</li>
-                            <li><i class="fa-solid fa-check text-gold"></i> Delete Events & Moderation</li>
-                            <li><i class="fa-solid fa-check text-gold"></i> Visual Analytics & Charts</li>
-                        </ul>
-                        <div class="block-action">
-                            <span>Launch Admin Panel</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= MODULE 2: ORGANIZER DASHBOARD ================= -->
-        <section id="organizer-view" class="view-section">
-            <div class="container page-header-row">
-                <div>
-                    <div class="breadcrumb"><i class="fa-solid fa-sliders"></i> Module 02 &bull; Organizer Command</div>
-                    <h1 class="page-title">Organizer Dashboard</h1>
-                    <p class="page-subtitle">Manage events, poster assets, registration limits, volunteer team
-                        assignments, and attendance reports.</p>
-                </div>
-                <div class="header-actions">
-                    <button class="btn btn-gradient" onclick="openModal('createEventModal')">
-                        <i class="fa-solid fa-plus"></i> Create New Event
-                    </button>
-                    <button class="btn btn-emerald" onclick="exportAttendanceReport('excel')">
-                        <i class="fa-solid fa-file-excel"></i> Export Excel
-                    </button>
-                    <button class="btn btn-outline-sm" onclick="exportAttendanceReport('pdf')">
-                        <i class="fa-solid fa-file-pdf"></i> Print PDF Report
-                    </button>
-                </div>
-            </div>
-
-            <!-- Dashboard Telemetry Stats -->
-            <div class="container">
-                <div class="dashboard-stats-grid">
-                    <div class="dash-stat-card">
-                        <div class="dash-stat-header">
-                            <span class="dash-stat-title">Total Registrations</span>
-                            <div class="dash-icon icon-purple"><i class="fa-solid fa-users"></i></div>
-                        </div>
-                        <div class="dash-stat-val" id="org-total-reg-val">3,890</div>
-                        <div class="dash-stat-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> Across 4 active
-                            events</div>
-                    </div>
-
-                    <div class="dash-stat-card">
-                        <div class="dash-stat-header">
-                            <span class="dash-stat-title">Checked-In Users</span>
-                            <div class="dash-icon icon-emerald"><i class="fa-solid fa-qrcode"></i></div>
-                        </div>
-                        <div class="dash-stat-val" id="org-checked-in-val">3,042</div>
-                        <div class="dash-stat-trend positive"><i class="fa-solid fa-check-double"></i> Gate entry
-                            verified</div>
-                    </div>
-
-                    <div class="dash-stat-card">
-                        <div class="dash-stat-header">
-                            <span class="dash-stat-title">Absent Users</span>
-                            <div class="dash-icon icon-orange"><i class="fa-solid fa-user-xmark"></i></div>
-                        </div>
-                        <div class="dash-stat-val" id="org-absent-val">848</div>
-                        <div class="dash-stat-trend neutral"><i class="fa-solid fa-clock"></i> Unscanned passes</div>
-                    </div>
-
-                    <div class="dash-stat-card">
-                        <div class="dash-stat-header">
-                            <span class="dash-stat-title">Attendance Rate</span>
-                            <div class="dash-icon icon-cyan"><i class="fa-solid fa-chart-line"></i></div>
-                        </div>
-                        <div class="dash-stat-val" id="org-attendance-rate-val">78.2%</div>
-                        <div class="dash-stat-trend positive"><i class="fa-solid fa-bolt"></i> High campus participation
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tabs in Organizer View -->
-                <div class="tabs-container">
-                    <div class="tab-nav">
-                        <button class="tab-btn active" data-tab="org-events" onclick="switchOrganizerTab('org-events')">
-                            <i class="fa-solid fa-calendar-days"></i> Managed Events (<span
-                                id="org-events-count">4</span>)
-                        </button>
-                        <button class="tab-btn" data-tab="org-volunteer-mgmt"
-                            onclick="switchOrganizerTab('org-volunteer-mgmt')">
-                            <i class="fa-solid fa-people-group"></i> Volunteer Team Management
-                        </button>
-                        <button class="tab-btn" data-tab="org-attendees" onclick="switchOrganizerTab('org-attendees')">
-                            <i class="fa-solid fa-address-book"></i> Attendance & Gate Entry Roster
-                        </button>
-                        <button class="tab-btn" data-tab="org-analytics" onclick="switchOrganizerTab('org-analytics')">
-                            <i class="fa-solid fa-chart-pie"></i> Visual Telemetry Analytics
-                        </button>
-                    </div>
-
-                    <!-- TAB 1: MANAGED EVENTS TABLE -->
-                    <div id="org-events-tab" class="tab-content active">
-                        <div class="table-container">
-                            <table class="data-table" id="organizer-events-table">
-                                <thead>
-                                    <tr>
-                                        <th>Poster & Event Title</th>
-                                        <th>Date, Time & Venue</th>
-                                        <th>Status</th>
-                                        <th>Reg. Limit / Capacity</th>
-                                        <th>Assigned Crew</th>
-                                        <th>Attendance %</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="organizer-events-tbody">
-                                    <!-- Dynamic rows -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- TAB 2: VOLUNTEER MANAGEMENT (ADD & ASSIGN TEAMS) -->
-                    <div id="org-volunteer-mgmt-tab" class="tab-content">
-                        <div
-                            style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                            <p style="color: var(--text-muted); font-size: 0.9rem;">
-                                Assign volunteers to specialized teams: <strong>Registration Desk</strong>,
-                                <strong>Technical Team</strong>, <strong>Photography</strong>,
-                                <strong>Hospitality</strong>, <strong>Stage Management</strong>.
-                            </p>
-                            <button class="btn btn-cyan btn-sm" onclick="openModal('addVolunteerModal')">
-                                <i class="fa-solid fa-user-plus"></i> Add Volunteer
-                            </button>
-                        </div>
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Volunteer Name & Email</th>
-                                        <th>Event Assigned</th>
-                                        <th>Assigned Team Role</th>
-                                        <th>Assignment Status</th>
-                                        <th>Task Progress</th>
-                                        <th>Reassign Role Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="organizer-volunteer-team-tbody">
-                                    <!-- Dynamic team rows -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- TAB 3: ATTENDANCE ROSTER & GATE LOGS -->
-                    <div id="org-attendees-tab" class="tab-content">
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Unique QR ID</th>
-                                        <th>Student Name & College ID</th>
-                                        <th>Dept & Year</th>
-                                        <th>Event</th>
-                                        <th>Gate Status</th>
-                                        <th>Check-in Time</th>
-                                        <th>Gate Control</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="organizer-attendees-tbody">
-                                    <!-- Dynamic attendance rows -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- TAB 4: VISUAL TELEMETRY ANALYTICS -->
-                    <div id="org-analytics-tab" class="tab-content">
-                        <div class="analytics-charts-grid">
-                            <!-- Chart 1: Registration Breakdown -->
-                            <div class="chart-card">
-                                <h3><i class="fa-solid fa-chart-bar text-purple"></i> Registration vs Limit per Event
-                                </h3>
-                                <div class="bar-chart-container" id="chart-registrations-bar">
-                                    <!-- Dynamic SVG/CSS Bars -->
-                                </div>
-                            </div>
-                            <!-- Chart 2: Department Participation -->
-                            <div class="chart-card">
-                                <h3><i class="fa-solid fa-chart-pie text-cyan"></i> Department-Wise Student Distribution
-                                </h3>
-                                <div class="dept-distribution-list" id="chart-dept-distribution">
-                                    <!-- Dynamic Progress Items -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= MODULE 3: VOLUNTEER DASHBOARD ================= -->
-        <section id="volunteer-view" class="view-section">
-            <div class="container page-header-row">
-                <div>
-                    <div class="breadcrumb"><i class="fa-solid fa-handshake-angle"></i> Module 03 &bull; Crew Portal
-                    </div>
-                    <h1 class="page-title">Volunteer Dashboard</h1>
-                    <p class="page-subtitle">View assigned duty roles, Accept or Reject invitations, complete
-                        checklists, and view attendance history.</p>
-                </div>
-            </div>
-
-            <div class="container">
-                <!-- Volunteer Passport Banner -->
-                <div class="volunteer-passport-banner">
-                    <div class="passport-left">
-                        <div class="user-avatar">
-                            <i class="fa-solid fa-user-astronaut"></i>
-                        </div>
-                        <div class="user-details">
-                            <div class="passport-title">Verified Crew Member</div>
-                            <h3 id="vol-profile-name">Alex Rivera</h3>
-                            <div class="user-tags">
-                                <span class="badge-role"><i class="fa-solid fa-shield-halved"></i> Technical Team
-                                    Lead</span>
-                                <span><i class="fa-solid fa-building-columns"></i> CSE Dept &bull; 3rd Year</span>
-                                <span><i class="fa-solid fa-star text-gold"></i> 4.9 Crew Rating</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="passport-right">
-                        <div class="qr-card">
-                            <i class="fa-solid fa-qrcode qr-icon"></i>
-                            <div class="qr-sub">CREW-ID #99482</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Assignments with Accept/Reject -->
-                <div class="section-subtitle-row">
-                    <h2><i class="fa-solid fa-bell text-cyan"></i> My Event Assignments & Duty Invitations</h2>
-                </div>
-
-                <div class="shifts-grid" id="volunteer-assignments-grid">
-                    <!-- Dynamic assignments -->
-                </div>
-
-                <!-- Interactive Task Checklist -->
-                <div class="section-subtitle-row" style="margin-top: 40px;">
-                    <h2><i class="fa-solid fa-list-check text-purple"></i> Assigned Event Task Checklist</h2>
-                    <span style="font-size: 0.85rem; color: var(--text-muted);" id="task-progress-label">2 of 4 tasks
-                        completed</span>
-                </div>
-
-                <div class="task-checklist-card">
-                    <div class="task-items-list" id="volunteer-tasks-container">
-                        <!-- Dynamic checkboxes -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ================= MODULE 4: ATTENDEE DASHBOARD ================= -->
-        <section id="attendee-view" class="view-section">
-            <div class="container page-header-row">
-                <div>
-                    <div class="breadcrumb"><i class="fa-solid fa-ticket"></i> Module 04 &bull; Student & Attendee Hub
-                    </div>
-                    <h1 class="page-title">Attendee Dashboard</h1>
-                    <p class="page-subtitle">Register for campus events, view your unique QR passes, check attendance
-                        history, and print E-Certificates.</p>
-                </div>
-                <div class="header-actions">
-                    <button class="btn btn-emerald" onclick="switchAttendeeSubTab('my-tickets')">
-                        <i class="fa-solid fa-wallet"></i> My QR Passes & Certificates (<span
-                            id="attendee-my-tickets-count">1</span>)
-                    </button>
-                </div>
-            </div>
-
-            <div class="container">
-                <!-- Sub Navigation Tabs -->
                 <div class="tabs-container">
                     <div class="tab-nav">
                         <button class="tab-btn active" id="btn-tab-discover" onclick="switchAttendeeSubTab('discover')">
-                            <i class="fa-solid fa-compass"></i> Browse Campus Events
+                            <i class="fa-solid fa-compass"></i> Discover Events
                         </button>
                         <button class="tab-btn" id="btn-tab-my-tickets" onclick="switchAttendeeSubTab('my-tickets')">
-                            <i class="fa-solid fa-qrcode"></i> My Registrations & E-Certificates
+                            <i class="fa-solid fa-qrcode"></i> My Registrations & QR Passes (<span id="my-tickets-count">0</span>)
                         </button>
                     </div>
 
@@ -541,33 +119,26 @@
                         <div class="search-filter-bar">
                             <div class="search-input-wrapper">
                                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                                <input type="text" id="event-search-input"
-                                    placeholder="Search events by title, department, or keyword..."
-                                    onkeyup="filterEvents()">
+                                <input type="text" id="event-search-input" placeholder="Search events by title or location..." onkeyup="filterEvents()">
                             </div>
                             <div class="category-filters">
-                                <button class="cat-btn active" onclick="filterEventsByCategory('all', this)">All
-                                    Categories</button>
-                                <button class="cat-btn" onclick="filterEventsByCategory('Tech', this)">Technical
-                                    Fest</button>
-                                <button class="cat-btn" onclick="filterEventsByCategory('Design', this)">Design &
-                                    Arts</button>
-                                <button class="cat-btn" onclick="filterEventsByCategory('Business', this)">Business &
-                                    E-Cell</button>
-                                <button class="cat-btn" onclick="filterEventsByCategory('Gaming', this)">Esports &
-                                    Gaming</button>
+                                <button class="cat-btn active" onclick="filterEventsByCategory('all', this)">All Events</button>
+                                <button class="cat-btn" onclick="filterEventsByCategory('Tech', this)">Technical</button>
+                                <button class="cat-btn" onclick="filterEventsByCategory('Design', this)">Design</button>
+                                <button class="cat-btn" onclick="filterEventsByCategory('Business', this)">Business</button>
+                                <button class="cat-btn" onclick="filterEventsByCategory('Gaming', this)">Esports</button>
                             </div>
                         </div>
 
                         <div class="events-cards-grid" id="events-display-grid">
-                            <!-- Dynamic Event Cards -->
+                            <!-- Dynamic Events -->
                         </div>
                     </div>
 
-                    <!-- TAB 2: MY REGISTRATIONS, QR PASSES & E-CERTIFICATES -->
+                    <!-- TAB 2: MY TICKETS WALLET & CERTIFICATES -->
                     <div id="attendee-tickets-tab" class="tab-content">
                         <div id="my-tickets-container" class="tickets-wallet-grid">
-                            <!-- Dynamic Purchased Passes & Certificates -->
+                            <!-- Dynamic Passes -->
                         </div>
                     </div>
                 </div>
@@ -575,108 +146,293 @@
         </section>
 
 
-        <!-- ================= MODULE 11: ADMIN PANEL ================= -->
-        <section id="admin-view" class="view-section">
+        <!-- ================= VIEW 2: VOLUNTEER & ORGANISER PORTAL (TWO DIFFERENT TABS) ================= -->
+        <section id="staff-portal-view" class="view-section">
             <div class="container page-header-row">
                 <div>
-                    <div class="breadcrumb"><i class="fa-solid fa-user-shield"></i> Module 11 &bull; System
-                        Administration</div>
-                    <h1 class="page-title">Admin Panel</h1>
-                    <p class="page-subtitle">Platform overview: Manage users, delete events, moderate content, and
-                        inspect system audit logs.</p>
+                    <div class="breadcrumb"><i class="fa-solid fa-shield-halved"></i> Staff & Management Portal</div>
+                    <h1 class="page-title">Volunteer & Organiser Access</h1>
+                    <p class="page-subtitle">Select your portal tab below to log in or create an account.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline-sm" onclick="showAttendeePortal()">
+                        <i class="fa-solid fa-arrow-left"></i> Return to Attendee Portal
+                    </button>
                 </div>
             </div>
 
             <div class="container">
-                <div class="tabs-container">
-                    <div class="tab-nav">
-                        <button class="tab-btn active" data-admin-tab="admin-users"
-                            onclick="switchAdminTab('admin-users')">
-                            <i class="fa-solid fa-users-gear"></i> Manage Users & Roles (<span
-                                id="admin-user-count">5</span>)
-                        </button>
-                        <button class="tab-btn" data-admin-tab="admin-events" onclick="switchAdminTab('admin-events')">
-                            <i class="fa-solid fa-calendar-xmark"></i> Moderate & Delete Events
-                        </button>
-                        <button class="tab-btn" data-admin-tab="admin-settings"
-                            onclick="switchAdminTab('admin-settings')">
-                            <i class="fa-solid fa-sliders"></i> System Settings
-                        </button>
+                <!-- TWO BIG DISTINCT TABS FOR VOLUNTEER & ORGANISER -->
+                <div class="two-big-tabs-container">
+                    <button class="big-tab-btn active" id="big-tab-volunteer" onclick="switchStaffTab('volunteer')">
+                        <div class="big-tab-icon icon-cyan"><i class="fa-solid fa-handshake-angle"></i></div>
+                        <div class="big-tab-text">
+                            <h3>Volunteer Portal</h3>
+                            <p>Crew login, sign up & duty rosters</p>
+                        </div>
+                    </button>
+
+                    <button class="big-tab-btn" id="big-tab-organizer" onclick="switchStaffTab('organizer')">
+                        <div class="big-tab-icon icon-purple"><i class="fa-solid fa-sliders"></i></div>
+                        <div class="big-tab-text">
+                            <h3>Organiser Portal</h3>
+                            <p>Organiser login, sign up & event studio</p>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- ================= STAFF TAB 1: VOLUNTEER PORTAL ================= -->
+                <div id="staff-volunteer-content" class="staff-tab-content active">
+                    
+                    <!-- VOLUNTEER AUTH CONTAINER (BEFORE LOGIN) -->
+                    <div id="volunteer-auth-card" class="auth-card-wrapper">
+                        <div class="auth-card-nav">
+                            <button class="auth-sub-tab active" id="vol-tab-login-btn" onclick="switchVolAuthSubTab('login')">Volunteer Login</button>
+                            <button class="auth-sub-tab" id="vol-tab-signup-btn" onclick="switchVolAuthSubTab('signup')">Volunteer Sign Up</button>
+                        </div>
+
+                        <!-- VOLUNTEER LOGIN FORM -->
+                        <form id="vol-login-form" onsubmit="handleVolLogin(event)">
+                            <div class="form-group">
+                                <label>Volunteer Email Address</label>
+                                <input type="email" id="vol-login-email" required placeholder="Enter volunteer email">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="vol-login-pass" required placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="btn btn-cyan" style="width: 100%;">
+                                Sign In to Volunteer Dashboard <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </form>
+
+                        <!-- VOLUNTEER SIGNUP FORM -->
+                        <form id="vol-signup-form" style="display: none;" onsubmit="handleVolSignup(event)">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="vol-signup-name" required placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="vol-signup-email" required placeholder="Enter email address">
+                            </div>
+                            <div class="form-group">
+                                <label>Preferred Crew Team</label>
+                                <select id="vol-signup-role" required>
+                                    <option value="Technical Team">Technical Team</option>
+                                    <option value="Registration Desk">Registration Desk</option>
+                                    <option value="Stage Management">Stage Management</option>
+                                    <option value="Hospitality & VIP">Hospitality & VIP</option>
+                                    <option value="Photography & Media">Photography & Media</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="vol-signup-pass" required placeholder="Create password">
+                            </div>
+                            <button type="submit" class="btn btn-cyan" style="width: 100%;">
+                                Create Volunteer Account <i class="fa-solid fa-user-plus"></i>
+                            </button>
+                        </form>
                     </div>
 
-                    <!-- TAB 1: MANAGE USERS -->
-                    <div id="admin-users-tab" class="tab-content active">
-                        <div class="table-container">
+                    <!-- VOLUNTEER DASHBOARD CONTAINER (AFTER LOGIN) -->
+                    <div id="volunteer-dashboard-card" style="display: none;">
+                        <div class="volunteer-passport-banner">
+                            <div class="passport-left">
+                                <div class="user-avatar">
+                                    <i class="fa-solid fa-user-astronaut"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="passport-title">Verified Crew Account</div>
+                                    <h3 id="vol-profile-name">Volunteer User</h3>
+                                    <div class="user-tags">
+                                        <span class="badge-role" id="vol-profile-role"><i class="fa-solid fa-shield-halved"></i> Crew Member</span>
+                                        <span id="vol-profile-email">volunteer@portal.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="passport-right">
+                                <button class="btn btn-outline-sm" onclick="volLogout()">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Assignments & Duty Invitations -->
+                        <div class="section-subtitle-row">
+                            <h2><i class="fa-solid fa-bell text-cyan"></i> Assigned Shifts & Duty Requests</h2>
+                        </div>
+
+                        <div class="shifts-grid" id="volunteer-assignments-grid">
+                            <!-- Dynamic Volunteer Shifts -->
+                        </div>
+
+                        <!-- Interactive Task Checklist -->
+                        <div class="section-subtitle-row" style="margin-top: 40px;">
+                            <h2><i class="fa-solid fa-list-check text-purple"></i> Event Duty Task Checklist</h2>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);" id="task-progress-label">0 tasks completed</span>
+                        </div>
+
+                        <div class="task-checklist-card">
+                            <div class="task-items-list" id="volunteer-tasks-container">
+                                <!-- Dynamic Checkboxes -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ================= STAFF TAB 2: ORGANISER PORTAL ================= -->
+                <div id="staff-organizer-content" class="staff-tab-content">
+                    
+                    <!-- ORGANISER AUTH CONTAINER (BEFORE LOGIN) -->
+                    <div id="organizer-auth-card" class="auth-card-wrapper">
+                        <div class="auth-card-nav">
+                            <button class="auth-sub-tab active" id="org-tab-login-btn" onclick="switchOrgAuthSubTab('login')">Organiser Login</button>
+                            <button class="auth-sub-tab" id="org-tab-signup-btn" onclick="switchOrgAuthSubTab('signup')">Organiser Sign Up</button>
+                        </div>
+
+                        <!-- ORGANISER LOGIN FORM -->
+                        <form id="org-login-form" onsubmit="handleOrgLogin(event)">
+                            <div class="form-group">
+                                <label>Organiser Email Address</label>
+                                <input type="email" id="org-login-email" required placeholder="Enter organiser email">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="org-login-pass" required placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="btn btn-gradient" style="width: 100%;">
+                                Sign In to Organiser Studio <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </form>
+
+                        <!-- ORGANISER SIGNUP FORM -->
+                        <form id="org-signup-form" style="display: none;" onsubmit="handleOrgSignup(event)">
+                            <div class="form-group">
+                                <label>Organization / Host Name</label>
+                                <input type="text" id="org-signup-orgname" required placeholder="Enter organization name">
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Person Name</label>
+                                <input type="text" id="org-signup-contact" required placeholder="Enter contact person name">
+                            </div>
+                            <div class="form-group">
+                                <label>Organiser Email Address</label>
+                                <input type="email" id="org-signup-email" required placeholder="Enter email address">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="org-signup-pass" required placeholder="Create password">
+                            </div>
+                            <button type="submit" class="btn btn-gradient" style="width: 100%;">
+                                Register Organiser Account <i class="fa-solid fa-user-plus"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- ORGANISER DASHBOARD CONTAINER (AFTER LOGIN) -->
+                    <div id="organizer-dashboard-card" style="display: none;">
+                        <div class="dashboard-stats-grid">
+                            <div class="dash-stat-card">
+                                <div class="dash-stat-header">
+                                    <span class="dash-stat-title">Total Registrations</span>
+                                    <div class="dash-icon icon-purple"><i class="fa-solid fa-users"></i></div>
+                                </div>
+                                <div class="dash-stat-val" id="org-total-reg-val">0</div>
+                                <div class="dash-stat-trend positive"><i class="fa-solid fa-chart-line"></i> Total attendee count</div>
+                            </div>
+
+                            <div class="dash-stat-card">
+                                <div class="dash-stat-header">
+                                    <span class="dash-stat-title">Checked-In Gate Users</span>
+                                    <div class="dash-icon icon-emerald"><i class="fa-solid fa-qrcode"></i></div>
+                                </div>
+                                <div class="dash-stat-val" id="org-checked-in-val">0</div>
+                                <div class="dash-stat-trend positive"><i class="fa-solid fa-check-double"></i> Gate verified</div>
+                            </div>
+
+                            <div class="dash-stat-card">
+                                <div class="dash-stat-header">
+                                    <span class="dash-stat-title">Volunteer Crew Members</span>
+                                    <div class="dash-icon icon-cyan"><i class="fa-solid fa-users-gear"></i></div>
+                                </div>
+                                <div class="dash-stat-val" id="org-vol-count-val">0 Assigned</div>
+                                <div class="dash-stat-trend neutral"><i class="fa-solid fa-check"></i> Crew roster</div>
+                            </div>
+
+                            <div class="dash-stat-card">
+                                <div class="dash-stat-header">
+                                    <span class="dash-stat-title">Attendance Rate</span>
+                                    <div class="dash-icon icon-orange"><i class="fa-solid fa-chart-line"></i></div>
+                                </div>
+                                <div class="dash-stat-val" id="org-attendance-rate-val">0%</div>
+                                <div class="dash-stat-trend positive"><i class="fa-solid fa-bolt"></i> Live percentage</div>
+                            </div>
+                        </div>
+
+                        <!-- Organizer Controls Row -->
+                        <div style="margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                <button class="btn btn-gradient" onclick="openModal('createEventModal')">
+                                    <i class="fa-solid fa-plus"></i> Create New Event
+                                </button>
+                                <button class="btn btn-cyan" onclick="openModal('addVolunteerModal')">
+                                    <i class="fa-solid fa-user-plus"></i> Assign Volunteer Team
+                                </button>
+                                <button class="btn btn-emerald" onclick="exportAttendanceReport('excel')">
+                                    <i class="fa-solid fa-file-excel"></i> Export Attendance CSV
+                                </button>
+                            </div>
+                            <button class="btn btn-outline-sm" onclick="orgLogout()">
+                                <i class="fa-solid fa-right-from-bracket"></i> Logout Organiser
+                            </button>
+                        </div>
+
+                        <!-- Managed Events Table -->
+                        <div class="table-container" style="margin-bottom: 32px;">
+                            <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i class="fa-solid fa-calendar-days text-purple"></i> Managed Events Directory</h3>
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>User Name & Email</th>
-                                        <th>College ID / Reg No</th>
-                                        <th>Assigned Role</th>
-                                        <th>Department</th>
-                                        <th>Account Status</th>
+                                        <th>Event Title</th>
+                                        <th>Date & Venue</th>
+                                        <th>Status</th>
+                                        <th>Reg. Limit / Seats</th>
+                                        <th>Volunteer Crew</th>
+                                        <th>Attendance</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="admin-users-tbody">
-                                    <!-- Dynamic users -->
+                                <tbody id="organizer-events-tbody">
+                                    <!-- Dynamic rows -->
                                 </tbody>
                             </table>
                         </div>
-                    </div>
 
-                    <!-- TAB 2: MODERATE & DELETE EVENTS -->
-                    <div id="admin-events-tab" class="tab-content">
+                        <!-- QR Gate Control Roster -->
                         <div class="table-container">
+                            <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i class="fa-solid fa-qrcode text-emerald"></i> Gate Control Check-in & Exit Telemetry</h3>
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Event Name</th>
-                                        <th>Organizer</th>
-                                        <th>Registrations / Limit</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Admin Moderation</th>
+                                        <th>Unique QR Pass</th>
+                                        <th>Attendee Name & Details</th>
+                                        <th>Email</th>
+                                        <th>Event</th>
+                                        <th>Gate Entry Status</th>
+                                        <th>Check-in Time</th>
+                                        <th>Gate Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="admin-events-tbody">
-                                    <!-- Dynamic events for deletion -->
+                                <tbody id="organizer-attendees-tbody">
+                                    <!-- Dynamic Gate Rows -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- TAB 3: SYSTEM SETTINGS -->
-                    <div id="admin-settings-tab" class="tab-content">
-                        <div class="form-row" style="margin-top: 10px;">
-                            <div class="form-group">
-                                <label>Platform Name</label>
-                                <input type="text" value="CventSphere Centralized Portal">
-                            </div>
-                            <div class="form-group">
-                                <label>Default Registration Cap</label>
-                                <input type="number" value="500">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>QR Duplicate Check-in Prevention</label>
-                                <select>
-                                    <option>Strict (Block Duplicate Scans)</option>
-                                    <option>Warning Only</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Auto-Generate E-Certificates</label>
-                                <select>
-                                    <option>Enabled Upon Attendance Scan</option>
-                                    <option>Disabled</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button class="btn btn-gradient" onclick="showToast('System settings updated!', 'success')">Save
-                            Configuration</button>
-                    </div>
                 </div>
             </div>
         </section>
@@ -686,96 +442,7 @@
 
     <!-- ================= MODALS ================= -->
 
-    <!-- MODAL 1: USER AUTHENTICATION (LOGIN / SIGNUP / FORGOT PASS) -->
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-lock text-purple"></i> Portal Access & Authentication</h3>
-                <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
-            </div>
-            <div style="padding: 20px 24px 0 24px;">
-                <div class="tab-nav" style="border: none; margin: 0;">
-                    <button class="tab-btn active" id="auth-tab-login-btn"
-                        onclick="switchAuthTab('login')">Login</button>
-                    <button class="tab-btn" id="auth-tab-signup-btn" onclick="switchAuthTab('signup')">Sign Up</button>
-                    <button class="tab-btn" id="auth-tab-forgot-btn" onclick="switchAuthTab('forgot')">Forgot
-                        Password</button>
-                </div>
-            </div>
-
-            <!-- LOGIN FORM -->
-            <form id="auth-login-form" onsubmit="handleLoginSubmit(event)">
-                <div class="form-group">
-                    <label>Select Login Role</label>
-                    <select id="login-role" required>
-                        <option value="Organizer">Organizer</option>
-                        <option value="Volunteer">Volunteer</option>
-                        <option value="Attendee" selected>Attendee / Student</option>
-                        <option value="Admin">System Admin</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="login-email" required placeholder="user@college.edu"
-                        value="jordan.hayes@college.edu">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="login-password" required value="••••••••">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('authModal')">Cancel</button>
-                    <button type="submit" class="btn btn-gradient">Log In</button>
-                </div>
-            </form>
-
-            <!-- SIGNUP FORM -->
-            <form id="auth-signup-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
-                <div class="form-group">
-                    <label>Register As</label>
-                    <select id="signup-role" required>
-                        <option value="Attendee">Attendee / Student</option>
-                        <option value="Volunteer">Volunteer</option>
-                        <option value="Organizer">Organizer</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="signup-name" required placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="signup-email" required placeholder="john@college.edu">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="signup-pass" required placeholder="••••••••">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('authModal')">Cancel</button>
-                    <button type="submit" class="btn btn-emerald">Create Account</button>
-                </div>
-            </form>
-
-            <!-- FORGOT PASSWORD FORM -->
-            <form id="auth-forgot-form" style="display: none;" onsubmit="handleForgotSubmit(event)">
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-                    Enter your registered email address to receive a password reset code.
-                </p>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="forgot-email" required placeholder="user@college.edu">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('authModal')">Cancel</button>
-                    <button type="submit" class="btn btn-cyan">Send Reset Code</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- MODAL 2: 8-FIELD COLLEGE EVENT REGISTRATION FORM -->
+    <!-- MODAL 1: ATTENDEE EVENT REGISTRATION FORM -->
     <div class="modal-overlay" id="collegeRegistrationModal">
         <div class="modal-card" style="max-width: 640px;">
             <div class="modal-header">
@@ -783,71 +450,39 @@
                 <button class="modal-close-btn" onclick="closeModal('collegeRegistrationModal')">&times;</button>
             </div>
             <form id="college-reg-form" onsubmit="handleCollegeRegSubmit(event)">
-                <div id="reg-event-header-info">
-                    <!-- Dynamic header -->
-                </div>
+                <div id="reg-event-header-info"></div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>1. Full Name *</label>
-                        <input type="text" id="reg-name" required value="Jordan Hayes">
+                        <input type="text" id="reg-name" required placeholder="Enter full name">
                     </div>
                     <div class="form-group">
-                        <label>2. College ID / Roll No *</label>
-                        <input type="text" id="reg-college-id" required value="2024-CSE-094">
+                        <label>2. Email Address *</label>
+                        <input type="email" id="reg-email" required placeholder="Enter email address">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>3. Email Address *</label>
-                        <input type="email" id="reg-email" required value="jordan.hayes@college.edu">
+                        <label>3. Phone Number *</label>
+                        <input type="tel" id="reg-phone" required placeholder="Enter phone number">
                     </div>
                     <div class="form-group">
-                        <label>4. Phone Number *</label>
-                        <input type="tel" id="reg-phone" required value="+1 (555) 234-5678">
+                        <label>4. Organization / Institution *</label>
+                        <input type="text" id="reg-institution" required placeholder="Enter institution or college">
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>5. Department *</label>
-                        <select id="reg-dept" required>
-                            <option value="Computer Science & Eng (CSE)">Computer Science & Eng (CSE)</option>
-                            <option value="Electronics & Comm (ECE)">Electronics & Comm (ECE)</option>
-                            <option value="Mechanical Eng (ME)">Mechanical Eng (ME)</option>
-                            <option value="Electrical Eng (EE)">Electrical Eng (EE)</option>
-                            <option value="Civil Engineering">Civil Engineering</option>
-                            <option value="Biotechnology">Biotechnology</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>6. Academic Year *</label>
-                        <select id="reg-year" required>
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year" selected>2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>7. Branch / Section *</label>
-                        <input type="text" id="reg-branch" required value="CSE-B">
-                    </div>
-                    <div class="form-group">
-                        <label>8. Selected Event *</label>
-                        <input type="text" id="reg-event-title" readonly style="opacity: 0.8;">
-                    </div>
+                <div class="form-group">
+                    <label>5. Selected Event *</label>
+                    <input type="text" id="reg-event-title" readonly style="opacity: 0.8;">
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        onclick="closeModal('collegeRegistrationModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('collegeRegistrationModal')">Cancel</button>
                     <button type="submit" class="btn btn-emerald">
-                        <i class="fa-solid fa-qrcode"></i> Complete Registration & Get QR
+                        <i class="fa-solid fa-qrcode"></i> Complete Registration & Get Pass
                     </button>
                 </div>
             </form>
@@ -855,7 +490,7 @@
     </div>
 
 
-    <!-- MODAL 3: CREATE / EDIT EVENT (ORGANIZER) -->
+    <!-- MODAL 2: CREATE / EDIT EVENT (ORGANISER) -->
     <div class="modal-overlay" id="createEventModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -866,7 +501,7 @@
                 <input type="hidden" id="ev-edit-id">
                 <div class="form-group">
                     <label>Event Title</label>
-                    <input type="text" id="ev-title" required placeholder="e.g., Annual Tech Hackathon 2026">
+                    <input type="text" id="ev-title" required placeholder="e.g., Annual Tech Summit 2026">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -874,8 +509,8 @@
                         <select id="ev-category" required>
                             <option value="Tech">Technical Fest</option>
                             <option value="Design">Design & UX</option>
-                            <option value="Business">Business & E-Cell</option>
-                            <option value="Gaming">Esports & Gaming</option>
+                            <option value="Business">Business & Summit</option>
+                            <option value="Gaming">Esports</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -884,28 +519,25 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Venue / Auditorium Location</label>
-                    <input type="text" id="ev-venue" required placeholder="Main Auditorium, Block B">
+                    <label>Venue Location</label>
+                    <input type="text" id="ev-venue" required placeholder="e.g., Main Auditorium / Online">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Registration Cap (Seats Limit)</label>
-                        <input type="number" id="ev-capacity" required min="10" value="500">
+                        <input type="number" id="ev-capacity" required min="10" placeholder="e.g., 500">
                     </div>
                     <div class="form-group">
-                        <label>Event Poster Image URL</label>
-                        <input type="url" id="ev-poster-url" required
-                            value="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&auto=format&fit=crop&q=80">
+                        <label>Poster Image URL</label>
+                        <input type="url" id="ev-poster-url" required placeholder="https://example.com/poster.jpg">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Event Description</label>
-                    <textarea id="ev-desc" rows="3" required
-                        placeholder="Keynotes, guest speakers, cash prizes..."></textarea>
+                    <textarea id="ev-desc" rows="3" required placeholder="Keynotes, agenda, details..."></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        onclick="closeModal('createEventModal')">Cancel</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('createEventModal')">Cancel</button>
                     <button type="submit" class="btn btn-gradient" id="ev-modal-submit-btn">Publish Event</button>
                 </div>
             </form>
@@ -913,30 +545,28 @@
     </div>
 
 
-    <!-- MODAL 4: ADD & ASSIGN VOLUNTEER TEAM (ORGANIZER) -->
+    <!-- MODAL 3: ASSIGN VOLUNTEER TEAM -->
     <div class="modal-overlay" id="addVolunteerModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3><i class="fa-solid fa-user-plus text-cyan"></i> Add & Assign Volunteer to Team</h3>
+                <h3><i class="fa-solid fa-user-plus text-cyan"></i> Assign Volunteer to Team</h3>
                 <button class="modal-close-btn" onclick="closeModal('addVolunteerModal')">&times;</button>
             </div>
             <form id="add-vol-form" onsubmit="handleAddVolunteerSubmit(event)">
                 <div class="form-group">
-                    <label>Volunteer Full Name</label>
-                    <input type="text" id="v-assign-name" required placeholder="e.g., Sarah Chen">
+                    <label>Volunteer Name</label>
+                    <input type="text" id="v-assign-name" required placeholder="Enter volunteer full name">
                 </div>
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" id="v-assign-email" required placeholder="sarah@college.edu">
+                    <input type="email" id="v-assign-email" required placeholder="Enter email address">
                 </div>
                 <div class="form-group">
-                    <label>Assign to Event</label>
-                    <select id="v-assign-event" required>
-                        <!-- Dynamic Options -->
-                    </select>
+                    <label>Assign Event</label>
+                    <select id="v-assign-event" required></select>
                 </div>
                 <div class="form-group">
-                    <label>Select Team Role</label>
+                    <label>Assign Team Role</label>
                     <select id="v-assign-role" required>
                         <option value="Registration Desk">Registration Desk</option>
                         <option value="Technical Team">Technical Team</option>
@@ -946,69 +576,57 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        onclick="closeModal('addVolunteerModal')">Cancel</button>
-                    <button type="submit" class="btn btn-cyan">Assign Volunteer</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addVolunteerModal')">Cancel</button>
+                    <button type="submit" class="btn btn-cyan">Assign Crew Role</button>
                 </div>
             </form>
         </div>
     </div>
 
 
-    <!-- MODAL 5: E-CERTIFICATE GENERATOR -->
-    <div class="modal-overlay" id="certificateModal">
-        <div class="modal-card" style="max-width: 680px; background: #0F172A; border: 2px solid #38BDF8;">
-            <div class="modal-header" style="border-bottom-color: rgba(56, 189, 248, 0.3);">
-                <h3 style="color: #38BDF8;"><i class="fa-solid fa-award"></i> Verified E-Certificate of Participation
-                </h3>
-                <button class="modal-close-btn" onclick="closeModal('certificateModal')">&times;</button>
-            </div>
-            <div id="certificate-body"
-                style="padding: 30px; text-align: center; color: #FFF; background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, rgba(15,23,42,1) 100%);">
-                <!-- Dynamic Certificate HTML -->
-            </div>
-            <div class="modal-footer" style="background: rgba(0,0,0,0.2); padding: 16px 24px;">
-                <button class="btn btn-secondary" onclick="closeModal('certificateModal')">Close</button>
-                <button class="btn btn-cyan" onclick="printCertificate()"><i class="fa-solid fa-print"></i> Download /
-                    Print Certificate</button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- MODAL 6: QR CODE PASS VIEW -->
+    <!-- MODAL 4: QR CODE PASS VIEW -->
     <div class="modal-overlay" id="viewTicketModal">
         <div class="modal-card modal-ticket-pass">
             <div class="modal-header">
-                <h3><i class="fa-solid fa-qrcode text-emerald"></i> Unique Gate Entry QR Code Pass</h3>
+                <h3><i class="fa-solid fa-qrcode text-emerald"></i> Digital Gate Pass</h3>
                 <button class="modal-close-btn" onclick="closeModal('viewTicketModal')">&times;</button>
             </div>
-            <div id="view-ticket-pass-body" class="ticket-pass-content">
-                <!-- Dynamic Pass -->
+            <div id="view-ticket-pass-body" class="ticket-pass-content"></div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: E-CERTIFICATE -->
+    <div class="modal-overlay" id="certificateModal">
+        <div class="modal-card" style="max-width: 680px; background: #0F172A; border: 2px solid #38BDF8;">
+            <div class="modal-header" style="border-bottom-color: rgba(56, 189, 248, 0.3);">
+                <h3 style="color: #38BDF8;"><i class="fa-solid fa-award"></i> E-Certificate of Participation</h3>
+                <button class="modal-close-btn" onclick="closeModal('certificateModal')">&times;</button>
+            </div>
+            <div id="certificate-body" style="padding: 30px; text-align: center; color: #FFF;"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('certificateModal')">Close</button>
+                <button class="btn btn-cyan" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Certificate</button>
             </div>
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATIONS CONTAINER -->
+    <!-- TOAST NOTIFICATIONS -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-brand">
                 <div class="logo-text">Cvent<span class="gradient-text">Sphere</span></div>
-                <p>Centralized Campus Event & Volunteer Portal &bull; Modules 01 to 11</p>
+                <p>Event Management & Volunteer Coordination Ecosystem</p>
             </div>
             <div class="footer-links">
-                <a href="#" onclick="switchView('organizer')">Organizer</a>
-                <a href="#" onclick="switchView('volunteer')">Volunteer</a>
-                <a href="#" onclick="switchView('attendee')">Attendee</a>
-                <a href="#" onclick="switchView('admin')">Admin Panel</a>
+                <a href="#" onclick="showAttendeePortal()">Attendee Portal</a>
+                <a href="#" onclick="showStaffPortal('volunteer')">Volunteer Portal</a>
+                <a href="#" onclick="showStaffPortal('organizer')">Organiser Studio</a>
             </div>
         </div>
     </footer>
 
     <script src="app.js"></script>
 </body>
-
 </html>
