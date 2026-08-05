@@ -116,12 +116,85 @@ function switchStaffTab(tabName) {
 // ATTENDEE LOGIN HANDLER
 function handleAttendeeLogin(e) {
     e.preventDefault();
-    const name = document.getElementById('att-name-input').value;
-    const email = document.getElementById('att-email-input').value;
+    const name  = document.getElementById('att-name-input').value.trim();
+    const email = document.getElementById('att-email-input').value.trim();
+
+    if (!name || !email) return;
 
     state.currentAttendee = { name, email };
+
+    // Update nav chip
     document.getElementById('user-chip-name').textContent = `${name} (Attendee)`;
-    showToast(`Welcome, ${name}! Attendee session active.`, 'success');
+
+    // Replace the auth box with a welcome card — gives clear visual feedback
+    const authBox = document.querySelector('.attendee-auth-box');
+    if (authBox) {
+        authBox.innerHTML = `
+            <div style="text-align:center; padding: 28px 24px;">
+                <div style="width:64px;height:64px;border-radius:50%;background:rgba(52,211,153,0.15);
+                            border:2px solid #34d399;display:flex;align-items:center;justify-content:center;
+                            margin:0 auto 16px;font-size:1.8rem;color:#34d399;">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:4px;">Welcome, ${name}!</h3>
+                <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:20px;">${email}</p>
+                <div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);
+                            border-radius:8px;padding:10px 14px;font-size:0.82rem;color:#34d399;margin-bottom:20px;">
+                    <i class="fa-solid fa-shield-check"></i> Attendee session active
+                </div>
+                <button class="btn btn-outline-sm" style="width:100%;font-size:0.85rem;"
+                        onclick="attendeeLogout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                </button>
+            </div>
+        `;
+    }
+
+    // Add a welcome notification
+    state.notifications.unshift({ text: `Signed in as ${name}. Browse events below!`, time: 'Just now' });
+    renderNotifications();
+
+    showToast(`Welcome, ${name}! Browse events below.`, 'success');
+
+    // Scroll smoothly to the events section
+    setTimeout(() => {
+        const eventsSection = document.getElementById('attendee-discover-tab');
+        if (eventsSection) eventsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
+}
+
+function attendeeLogout() {
+    state.currentAttendee = null;
+    document.getElementById('user-chip-name').textContent = 'Attendee Portal';
+
+    // Restore the login form
+    const authBox = document.querySelector('.attendee-auth-box');
+    if (authBox) {
+        authBox.innerHTML = `
+            <div class="auth-box-header">
+                <h3><i class="fa-solid fa-right-to-bracket text-emerald"></i> Attendee Sign In</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Sign in to access your tickets and digital passes</p>
+            </div>
+            <form id="attendee-login-form" onsubmit="handleAttendeeLogin(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="att-name-input" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="att-email-input" required placeholder="Enter your email address">
+                </div>
+                <div class="form-group">
+                    <label>Password / Access Code</label>
+                    <input type="password" id="att-pass-input" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-emerald" style="width: 100%;">
+                    Sign In as Attendee <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        `;
+    }
+    showToast('Signed out of Attendee Portal', 'info');
 }
 
 // VOLUNTEER AUTH SUB-TABS & HANDLERS
@@ -404,8 +477,8 @@ function renderMyRegistrations() {
                 <div><i class="fa-regular fa-calendar text-emerald"></i> ${r.date}</div>
                 <div><i class="fa-solid fa-location-dot text-purple"></i> ${r.venue}</div>
             </div>
-            <div class="ticket-qr-stub">
-                <i class="fa-solid fa-qrcode qr-large"></i>
+            <div class="ticket-qr-stub" style="display: flex; gap: 16px; align-items: center; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${r.qrCode}&color=0f172a&bgcolor=34d399" alt="QR Code" style="width: 80px; height: 80px; border-radius: 6px; border: 2px solid #34d399;" />
                 <div>
                     <div style="font-weight: 700; color: #FFF;">Unique Entry Pass</div>
                     <div style="font-size: 0.75rem; color: var(--text-dim);">Scan at gate entrance</div>
@@ -435,7 +508,7 @@ function openViewPassModal(qrCode) {
             <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">${r.date} &bull; ${r.venue}</div>
 
             <div style="background: #FFF; padding: 20px; border-radius: var(--radius-md); display: inline-block; margin-bottom: 16px;">
-                <i class="fa-solid fa-qrcode" style="font-size: 8rem; color: #0B0F17;"></i>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${r.qrCode}" alt="Large QR Code" style="width: 200px; height: 200px;" />
             </div>
             <div style="font-family: monospace; font-size: 1.2rem; font-weight: 800; color: var(--emerald-primary);">${r.qrCode}</div>
         </div>
@@ -570,11 +643,11 @@ function renderOrganizerDashboard() {
                     <td>${att.email}</td>
                     <td>${att.event}</td>
                     <td>
-                        ${att.gateStatus === 'In-Venue' 
-                            ? `<span class="badge-status status-in-venue"><i class="fa-solid fa-check"></i> Checked-In</span>` 
-                            : (att.gateStatus === 'Exited' 
-                                ? `<span class="badge-status status-exited">Exited</span>`
-                                : `<span class="badge-status status-not-entered">Absent</span>`)}
+                        ${att.gateStatus === 'In-Venue'
+                    ? `<span class="badge-status status-in-venue"><i class="fa-solid fa-check"></i> Checked-In</span>`
+                    : (att.gateStatus === 'Exited'
+                        ? `<span class="badge-status status-exited">Exited</span>`
+                        : `<span class="badge-status status-not-entered">Absent</span>`)}
                     </td>
                     <td>${att.checkInTime}</td>
                     <td>
@@ -684,7 +757,7 @@ function deleteEvent(eventId) {
 }
 
 function exportAttendanceReport() {
-    const csvContent = "data:text/csv;charset=utf-8," + 
+    const csvContent = "data:text/csv;charset=utf-8," +
         "QR Code,Attendee Name,Email,Event,Gate Status,Checkin Time\n" +
         state.attendeesRoster.map(a => `${a.qrCode},${a.name},${a.email},${a.event},${a.gateStatus},${a.checkInTime}`).join("\n");
     const encodedUri = encodeURI(csvContent);
