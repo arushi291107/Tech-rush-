@@ -10,12 +10,12 @@ const state = {
   events: [
     {
       id: 'ev-1',
-      title: 'Annual Tech Fest & Hackathon 2026',
+      title: ' Hackathon 2026',
       category: 'Tech',
-      date: '2026-09-15 @ 10:00 AM',
-      venue: 'Main Auditorium, Block B',
-      capacity: 500,
-      sold: 440,
+      date: '2026-09-15 @ 11:00 AM',
+      venue: 'Fy F001',
+      capacity: 100,
+      sold: 89,
       volunteersAssigned: 12,
       status: 'Live',
       image: 'https:',
@@ -23,29 +23,29 @@ const state = {
     },
     {
       id: 'ev-2',
-      title: 'UX Design System Expo & Masterclass',
-      category: 'Design',
+      title: 'Adiction 26',
+      category: 'cultural',
       date: '2026-10-02 @ 11:30 AM',
-      venue: 'Design Studio Hall 3',
-      capacity: 300,
-      sold: 220,
-      volunteersAssigned: 8,
+      venue: 'Basketball Ground',
+      capacity: 800,
+      sold: 600,
+      volunteersAssigned: 60,
       status: 'Published',
       image: 'https:',
-      description: 'Explore UI design tokens, component architecture, and design showcases.'
+      description: ''An morning filled with music, dance, drama, fashion shows, and live performances by talented students from across the campus.'
     },
     {
       id: 'ev-3',
-      title: 'Founders Summit & Pitch Arena',
+      title: 'Startup Expo 26',
       category: 'Business',
       date: '2026-10-20 @ 09:00 AM',
-      venue: 'Convention Hall A',
+      venue: 'A3 001',
       capacity: 400,
       sold: 380,
       volunteersAssigned: 10,
       status: 'Published',
       image: 'https:',
-      description: 'Connecting student founders with VC mentors, angel investors, and incubation grants.'
+      description: 'Meet startup founders, investors, and innovators while exploring business ideas, networking opportunities, and pitching competitions.'
     }
   ],
 
@@ -70,11 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderVolunteerDashboard();
   renderOrganizerDashboard();
 });
-
-// ===== Small shared helpers =====
-
-// Toggles the "active" class between two elements based on a condition,
-// and optionally toggles display style on two content panes at once.
 function toggleActivePair(condA, elA, elB, paneA, paneB) {
   elA.classList.toggle('active', condA);
   elB.classList.toggle('active', !condA);
@@ -91,8 +86,6 @@ function val(id) {
 function nameFromEmail(email) {
   return email.split('@')[0].replace('.', ' ');
 }
-
-// ===== Portal / tab navigation =====
 
 function showAttendeePortal() {
   state.activePortal = 'attendee';
@@ -225,7 +218,7 @@ function attendeeLogout() {
   showToast('Signed out of Attendee Portal', 'info');
 }
 
-// ===== Volunteer auth =====
+//  Volunteer auth
 
 function handleVolLogin(e) {
   e.preventDefault();
@@ -265,9 +258,7 @@ function volLogout() {
   document.getElementById('volunteer-auth-card').style.display = 'block';
   showToast('Logged out of Volunteer Portal', 'info');
 }
-
-// ===== Organizer auth =====
-
+//  Organizer 
 function handleOrgLogin(e) {
   e.preventDefault();
   const email = val('org-login-email');
@@ -301,8 +292,6 @@ function orgLogout() {
   document.getElementById('organizer-auth-card').style.display = 'block';
   showToast('Logged out of Organiser Studio', 'info');
 }
-
-// ===== Attendee event browsing & registration =====
 
 function renderAttendeeEvents() {
   const grid = document.getElementById('events-display-grid');
@@ -500,8 +489,6 @@ function openCertificateModal(qrCode) {
   openModal('certificateModal');
 }
 
-// ===== Volunteer dashboard =====
-
 function renderVolunteerDashboard() {
   const grid = document.getElementById('volunteer-assignments-grid');
   const tasksContainer = document.getElementById('volunteer-tasks-container');
@@ -562,8 +549,6 @@ function toggleTaskDone(taskId) {
   renderVolunteerDashboard();
   showToast('Task progress updated!', 'success');
 }
-
-// ===== Organizer dashboard =====
 
 function renderOrganizerDashboard() {
   const tbodyEv = document.getElementById('organizer-events-tbody');
@@ -747,8 +732,6 @@ function updateDashboardStats() {
   if (rateVal) rateVal.textContent = `${rate}%`;
 }
 
-// ===== Notifications =====
-
 function toggleNotifDropdown() {
   document.getElementById('notif-dropdown')?.classList.toggle('active');
 }
@@ -778,8 +761,6 @@ function renderNotifications() {
       </div>
     `).join('');
 }
-
-// ===== Modals & toasts =====
 
 function openModal(id) {
   document.getElementById(id)?.classList.add('active');
