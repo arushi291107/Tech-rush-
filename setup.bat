@@ -1,6 +1,6 @@
 @echo off
 echo =============================================
-echo   CventSphere — Backend Setup Script
+echo   Plannerix — Backend Setup Script
 echo =============================================
 echo.
 

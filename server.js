@@ -77,7 +77,7 @@ app.use('/api/admin', require('./routes/admin'));
 app.get('/api/health', (req, res) => {
     res.json({
         success: true,
-        message: '🚀 CventSphere Backend is running!',
+        message: '🚀 Plannerix Backend is running!',
         timestamp: new Date().toISOString(),
         version: '1.0.0'
     });
@@ -107,7 +107,7 @@ app.use((err, req, res, next) => {
 server.listen(PORT, () => {
     console.log('');
     console.log('╔══════════════════════════════════════════════════╗');
-    console.log('║   🎯 CventSphere Backend Server                  ║');
+    console.log('║   🎯 Plannerix Backend Server                  ║');
     console.log(`║   🌐 Running at: http://localhost:${PORT}            ║`);
     console.log('║   📡 Socket.io: enabled (real-time)              ║');
     console.log('║   🗄️  Database: MySQL                             ║');

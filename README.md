@@ -1,4 +1,4 @@
-# CventSphere — Full-Stack Setup Guide
+# Plannerix — Full-Stack Setup Guide
 
 ## Tech Stack
 | Layer | Technology |
@@ -27,7 +27,7 @@ Open MySQL Workbench (or the CLI) and run:
 -- In MySQL CLI:
 mysql -u root -p < database/schema.sql
 ```
-This creates the `cventsphere` database with all tables and seed data.
+This creates the `plannerix` database with all tables and seed data.
 
 ### 4. Configure Environment
 Edit the `.env` file in the project root:
@@ -47,7 +47,7 @@ node server.js
 ```
 You should see:
 ```
-🎯 CventSphere Backend Server
+🎯 Plannerix Backend Server
 🌐 Running at: http://localhost:3000
 ```
 
@@ -87,8 +87,8 @@ r io/
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@cventsphere.com | Admin@1234 |
-| Organizer | organizer@cventsphere.com | Admin@1234 |
+| Admin | admin@plannerix.com | Admin@1234 |
+| Organizer | organizer@plannerix.com | Admin@1234 |
 
 ---
 

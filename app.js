@@ -1,5 +1,5 @@
 /**
- * CventSphere - Event Management & Volunteer Coordination Engine
+ * Plannerix - Event Management & Volunteer Coordination Engine
  * Pure Vanilla JS Application State & View Controller
  */
 
@@ -526,7 +526,7 @@ function openCertificateModal(qrCode) {
     body.innerHTML = `
         <div style="border: 4px double #38BDF8; padding: 30px; border-radius: 8px;">
             <div style="font-size: 0.85rem; letter-spacing: 2px; color: #38BDF8; text-transform: uppercase; margin-bottom: 10px;">Official Certificate of Participation</div>
-            <h1 style="font-size: 2rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; margin-bottom: 10px;">CVENTSPHERE PORTAL</h1>
+            <h1 style="font-size: 2rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; margin-bottom: 10px;">PLANNERIX PORTAL</h1>
             <p style="font-size: 0.95rem; color: var(--text-muted);">Awarded to</p>
             <h2 style="font-size: 1.8rem; font-weight: 800; color: #FBBF24; margin: 12px 0;">${attendeeName}</h2>
             <p style="margin: 16px 0; font-size: 1rem;">For successful completion of <strong>${r.eventName}</strong></p>

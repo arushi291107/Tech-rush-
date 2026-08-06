@@ -1,7 +1,7 @@
 {
-  "name": "cventsphere-backend",
+  "name": "plannerix-backend",
   "version": "1.0.0",
-  "description": "CventSphere - Centralized Event & Volunteer Management Portal Backend",
+  "description": "Plannerix - Centralized Event & Volunteer Management Portal Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
