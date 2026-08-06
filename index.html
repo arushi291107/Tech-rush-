@@ -7,20 +7,18 @@
     <title>Plannerix - Event Management & Volunteer Portal</title>
     <meta name="description"
         content="Centralized event registration, volunteer coordination, and QR gate management portal.">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap)"
         rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <!-- Top Navigation Bar -->
     <header class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="brand-logo" onclick="showAttendeePortal()">
@@ -28,9 +26,7 @@
                 <span class="logo-text">Planner<span class="gradient-text">ix</span></span>
             </a>
 
-            <!-- CLEAN NAVBAR WITHOUT TOP VOLUNTEER/ORGANIZER BUTTONS -->
             <div class="nav-actions">
-                <!-- Notifications Center -->
                 <div class="notif-wrapper">
                     <button class="icon-nav-btn" onclick="toggleNotifDropdown()" title="Notifications">
                         <i class="fa-solid fa-bell"></i>
@@ -48,7 +44,6 @@
                     </div>
                 </div>
 
-                <!-- User Session Indicator -->
                 <div class="user-auth-wrapper">
                     <div class="user-session-chip" id="user-chip" onclick="showAttendeePortal()">
                         <i class="fa-solid fa-circle-user text-emerald"></i>
@@ -59,12 +54,10 @@
         </div>
     </header>
 
-    <!-- Main Content Container -->
     <main class="main-content">
 
-        <!-- ================= VIEW 1: ATTENDEE PORTAL (DEFAULT OPEN VIEW) ================= -->
+        <!-- Attendee portal (default view) -->
         <section id="attendee-portal-view" class="view-section active">
-            <!-- Attendee Landing & Auth Hero -->
             <div class="attendee-hero-card">
                 <div class="hero-glow background-glow-1"></div>
                 <div class="container hero-split">
@@ -75,7 +68,6 @@
                             access your personal digital QR gate pass.</p>
                     </div>
 
-                    <!-- ATTENDEE SIGN IN BOX -->
                     <div class="attendee-auth-box">
                         <div class="auth-box-header">
                             <h3><i class="fa-solid fa-right-to-bracket text-emerald"></i> Attendee Sign In</h3>
@@ -101,7 +93,6 @@
                             </button>
                         </form>
 
-                        <!-- SWITCHER BUTTON PLACED DIRECTLY BELOW ATTENDEE LOGIN BOX -->
                         <div class="switch-banner-below">
                             <button class="btn btn-staff-switch" onclick="showStaffPortal('volunteer')">
                                 Not an Attendee? Click here for Volunteers & Organizers <i
@@ -112,7 +103,6 @@
                 </div>
             </div>
 
-            <!-- Attendee Events Explorer & Tickets Wallet -->
             <div class="container section-padding">
                 <div class="tabs-container">
                     <div class="tab-nav">
@@ -125,7 +115,6 @@
                         </button>
                     </div>
 
-                    <!-- TAB 1: DISCOVER EVENTS -->
                     <div id="attendee-discover-tab" class="tab-content active">
                         <div class="search-filter-bar">
                             <div class="search-input-wrapper">
@@ -146,23 +135,18 @@
                             </div>
                         </div>
 
-                        <div class="events-cards-grid" id="events-display-grid">
-                            <!-- Dynamic Events -->
-                        </div>
+                        <div class="events-cards-grid" id="events-display-grid"></div>
                     </div>
 
-                    <!-- TAB 2: MY TICKETS WALLET & CERTIFICATES -->
                     <div id="attendee-tickets-tab" class="tab-content">
-                        <div id="my-tickets-container" class="tickets-wallet-grid">
-                            <!-- Dynamic Passes -->
-                        </div>
+                        <div id="my-tickets-container" class="tickets-wallet-grid"></div>
                     </div>
                 </div>
             </div>
         </section>
 
 
-        <!-- ================= VIEW 2: VOLUNTEER & ORGANISER PORTAL (TWO DIFFERENT TABS) ================= -->
+        <!-- Staff portal: volunteer + organiser -->
         <section id="staff-portal-view" class="view-section">
             <div class="container page-header-row">
                 <div>
@@ -178,7 +162,6 @@
             </div>
 
             <div class="container">
-                <!-- TWO BIG DISTINCT TABS FOR VOLUNTEER & ORGANISER -->
                 <div class="two-big-tabs-container">
                     <button class="big-tab-btn active" id="big-tab-volunteer" onclick="switchStaffTab('volunteer')">
                         <div class="big-tab-icon icon-cyan"><i class="fa-solid fa-handshake-angle"></i></div>
@@ -197,10 +180,9 @@
                     </button>
                 </div>
 
-                <!-- ================= STAFF TAB 1: VOLUNTEER PORTAL ================= -->
+                <!-- Volunteer tab -->
                 <div id="staff-volunteer-content" class="staff-tab-content active">
 
-                    <!-- VOLUNTEER AUTH CONTAINER (BEFORE LOGIN) -->
                     <div id="volunteer-auth-card" class="auth-card-wrapper">
                         <div class="auth-card-nav">
                             <button class="auth-sub-tab active" id="vol-tab-login-btn"
@@ -209,7 +191,6 @@
                                 onclick="switchVolAuthSubTab('signup')">Volunteer Sign Up</button>
                         </div>
 
-                        <!-- VOLUNTEER LOGIN FORM -->
                         <form id="vol-login-form" onsubmit="handleVolLogin(event)">
                             <div class="form-group">
                                 <label>Volunteer Email Address</label>
@@ -224,7 +205,6 @@
                             </button>
                         </form>
 
-                        <!-- VOLUNTEER SIGNUP FORM -->
                         <form id="vol-signup-form" style="display: none;" onsubmit="handleVolSignup(event)">
                             <div class="form-group">
                                 <label>Full Name</label>
@@ -254,7 +234,6 @@
                         </form>
                     </div>
 
-                    <!-- VOLUNTEER DASHBOARD CONTAINER (AFTER LOGIN) -->
                     <div id="volunteer-dashboard-card" style="display: none;">
                         <div class="volunteer-passport-banner">
                             <div class="passport-left">
@@ -278,16 +257,12 @@
                             </div>
                         </div>
 
-                        <!-- Assignments & Duty Invitations -->
                         <div class="section-subtitle-row">
                             <h2><i class="fa-solid fa-bell text-cyan"></i> Assigned Shifts & Duty Requests</h2>
                         </div>
 
-                        <div class="shifts-grid" id="volunteer-assignments-grid">
-                            <!-- Dynamic Volunteer Shifts -->
-                        </div>
+                        <div class="shifts-grid" id="volunteer-assignments-grid"></div>
 
-                        <!-- Interactive Task Checklist -->
                         <div class="section-subtitle-row" style="margin-top: 40px;">
                             <h2><i class="fa-solid fa-list-check text-purple"></i> Event Duty Task Checklist</h2>
                             <span style="font-size: 0.85rem; color: var(--text-muted);" id="task-progress-label">0 tasks
@@ -295,18 +270,15 @@
                         </div>
 
                         <div class="task-checklist-card">
-                            <div class="task-items-list" id="volunteer-tasks-container">
-                                <!-- Dynamic Checkboxes -->
-                            </div>
+                            <div class="task-items-list" id="volunteer-tasks-container"></div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- ================= STAFF TAB 2: ORGANISER PORTAL ================= -->
+                <!-- Organiser tab -->
                 <div id="staff-organizer-content" class="staff-tab-content">
 
-                    <!-- ORGANISER AUTH CONTAINER (BEFORE LOGIN) -->
                     <div id="organizer-auth-card" class="auth-card-wrapper">
                         <div class="auth-card-nav">
                             <button class="auth-sub-tab active" id="org-tab-login-btn"
@@ -315,7 +287,6 @@
                                 onclick="switchOrgAuthSubTab('signup')">Organiser Sign Up</button>
                         </div>
 
-                        <!-- ORGANISER LOGIN FORM -->
                         <form id="org-login-form" onsubmit="handleOrgLogin(event)">
                             <div class="form-group">
                                 <label>Organiser Email Address</label>
@@ -330,7 +301,6 @@
                             </button>
                         </form>
 
-                        <!-- ORGANISER SIGNUP FORM -->
                         <form id="org-signup-form" style="display: none;" onsubmit="handleOrgSignup(event)">
                             <div class="form-group">
                                 <label>Organization / Host Name</label>
@@ -356,7 +326,6 @@
                         </form>
                     </div>
 
-                    <!-- ORGANISER DASHBOARD CONTAINER (AFTER LOGIN) -->
                     <div id="organizer-dashboard-card" style="display: none;">
                         <div class="dashboard-stats-grid">
                             <div class="dash-stat-card">
@@ -399,7 +368,6 @@
                             </div>
                         </div>
 
-                        <!-- Organizer Controls Row -->
                         <div
                             style="margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
                             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
@@ -418,7 +386,6 @@
                             </button>
                         </div>
 
-                        <!-- Managed Events Table -->
                         <div class="table-container" style="margin-bottom: 32px;">
                             <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i
                                     class="fa-solid fa-calendar-days text-purple"></i> Managed Events Directory</h3>
@@ -434,13 +401,10 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="organizer-events-tbody">
-                                    <!-- Dynamic rows -->
-                                </tbody>
+                                <tbody id="organizer-events-tbody"></tbody>
                             </table>
                         </div>
 
-                        <!-- QR Gate Control Roster -->
                         <div class="table-container">
                             <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i
                                     class="fa-solid fa-qrcode text-emerald"></i> Gate Control Check-in & Exit Telemetry
@@ -457,9 +421,7 @@
                                         <th>Gate Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="organizer-attendees-tbody">
-                                    <!-- Dynamic Gate Rows -->
-                                </tbody>
+                                <tbody id="organizer-attendees-tbody"></tbody>
                             </table>
                         </div>
                     </div>
@@ -471,9 +433,8 @@
     </main>
 
 
-    <!-- ================= MODALS ================= -->
+    <!-- Modals -->
 
-    <!-- MODAL 1: ATTENDEE EVENT REGISTRATION FORM -->
     <div class="modal-overlay" id="collegeRegistrationModal">
         <div class="modal-card" style="max-width: 640px;">
             <div class="modal-header">
@@ -522,7 +483,6 @@
     </div>
 
 
-    <!-- MODAL 2: CREATE / EDIT EVENT (ORGANISER) -->
     <div class="modal-overlay" id="createEventModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -561,7 +521,7 @@
                     </div>
                     <div class="form-group">
                         <label>Poster Image URL</label>
-                        <input type="url" id="ev-poster-url" required placeholder="https://example.com/poster.jpg">
+                        <input type="url" id="ev-poster-url" required placeholder="[example.com](https://example.com/poster.jpg)">
                     </div>
                 </div>
                 <div class="form-group">
@@ -578,7 +538,6 @@
     </div>
 
 
-    <!-- MODAL 3: ASSIGN VOLUNTEER TEAM -->
     <div class="modal-overlay" id="addVolunteerModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -618,7 +577,6 @@
     </div>
 
 
-    <!-- MODAL 4: QR CODE PASS VIEW -->
     <div class="modal-overlay" id="viewTicketModal">
         <div class="modal-card modal-ticket-pass">
             <div class="modal-header">
@@ -629,7 +587,6 @@
         </div>
     </div>
 
-    <!-- MODAL 5: E-CERTIFICATE -->
     <div class="modal-overlay" id="certificateModal">
         <div class="modal-card" style="max-width: 680px; background: #0F172A; border: 2px solid #38BDF8;">
             <div class="modal-header" style="border-bottom-color: rgba(56, 189, 248, 0.3);">
@@ -645,7 +602,6 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATIONS -->
     <div id="toast-container" class="toast-container"></div>
 
     <footer class="footer">
